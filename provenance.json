@@ -1,0 +1,168 @@
+{
+ "contract": "0x744D59F4F77E3556A62f51FfFAdD7A82859A3D38",
+ "tx_count": 130,
+ "mint_senders": {
+  "0x7c717EBb2f1a21124FC096E163981F02b940745f": 115
+ },
+ "reverted_mints": [
+  "0x5a54719aa22fb9c2ddf2334d2455c4ce79a965067fe6d624a5a524c774deeccd",
+  "0xe27ed414dca8bcd21a9488ea715a4d91f9b9f3c1477c096709fa22c6da428c06",
+  "0xe4f9b3caae8183460264dc3d3f5b5d084dc6181eae5356271aee76558c1ca97f",
+  "0xd30b81c5b7b6fcf1aebb7ae8c4d8c11078ea17fca4d84f235cc438e44baa0d13",
+  "0x60860efa4acd2dcb3390d0703f47bc60c16a4f7f82099bcb2868313f22261f9e"
+ ],
+ "edits": [
+  {
+   "tokenId": "8",
+   "name": "Binary Pixels #8",
+   "ts": "2026-05-20T06:12:27.000000Z",
+   "status": "ok",
+   "cells_changed": null,
+   "before": {
+    "Black Pixels": 12,
+    "White Pixels": 69,
+    "Rarity": "Rare"
+   },
+   "after": {
+    "Black Pixels": 12,
+    "White Pixels": 69,
+    "Rarity": "Rare"
+   },
+   "image_was": "off-chain url",
+   "image_now": "embedded png",
+   "before_grid": null,
+   "after_grid": "100000100000000001000000100011000100000000000001010000010000100000000010000000000"
+  },
+  {
+   "tokenId": "7",
+   "name": "Binary Pixels #7",
+   "ts": "2026-05-20T06:12:27.000000Z",
+   "status": "ok",
+   "cells_changed": null,
+   "before": {
+    "Black Pixels": 36,
+    "White Pixels": 45,
+    "Rarity": "Common"
+   },
+   "after": {
+    "Black Pixels": 36,
+    "White Pixels": 45,
+    "Rarity": "Common"
+   },
+   "image_was": "off-chain url",
+   "image_now": "embedded png",
+   "before_grid": null,
+   "after_grid": "101000010001101100000110001010000011100001000110101001110010101001111101000101111"
+  },
+  {
+   "tokenId": "32",
+   "name": "Binary Pixels #32",
+   "ts": "2026-05-22T01:46:23.000000Z",
+   "status": "ok",
+   "cells_changed": 31,
+   "before": {
+    "Black Pixels": 0,
+    "White Pixels": 81,
+    "Rarity": "Mythic",
+    "Pattern": "Solid Core"
+   },
+   "after": {
+    "Black Pixels": 31,
+    "White Pixels": 50,
+    "Rarity": "Common"
+   },
+   "image_was": "embedded png",
+   "image_now": "embedded png",
+   "before_grid": "000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "after_grid": "000111001001100100010000100110001100001100000110000110011001010100110010010100101"
+  },
+  {
+   "tokenId": "13",
+   "name": "Binary Pixels #13",
+   "ts": "2026-05-22T11:49:05.000000Z",
+   "status": "ok",
+   "cells_changed": 0,
+   "before": {
+    "Black Pixels": 0,
+    "White Pixels": 81,
+    "Rarity": "Mythic",
+    "Pattern": "Solid Core"
+   },
+   "after": {
+    "Black Pixels": 0,
+    "White Pixels": 81,
+    "Rarity": "Mythic"
+   },
+   "image_was": "embedded png",
+   "image_now": "embedded png",
+   "before_grid": "000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "after_grid": "000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+   "tokenId": "5",
+   "name": "Binary Pixels #5",
+   "ts": "2026-05-22T11:49:17.000000Z",
+   "status": "ok",
+   "cells_changed": 0,
+   "before": {
+    "Black Pixels": 5,
+    "White Pixels": 76,
+    "Rarity": "Legendary",
+    "Pattern": "Diagonal \u2199"
+   },
+   "after": {
+    "Black Pixels": 5,
+    "White Pixels": 76,
+    "Rarity": "Legendary",
+    "Pattern": "Cross"
+   },
+   "image_was": "embedded png",
+   "image_now": "embedded png",
+   "before_grid": "000000000000000000100101000000000000000000000000001000000000000000000000010000000",
+   "after_grid": "000000000000000000100101000000000000000000000000001000000000000000000000010000000"
+  },
+  {
+   "tokenId": "30",
+   "name": "Binary Pixels #30",
+   "ts": "2026-05-22T11:54:53.000000Z",
+   "status": "ok",
+   "cells_changed": 0,
+   "before": {
+    "Black Pixels": 76,
+    "White Pixels": 5,
+    "Rarity": "Legendary",
+    "Pattern": "Diagonal \u2199"
+   },
+   "after": {
+    "Black Pixels": 76,
+    "White Pixels": 5,
+    "Rarity": "Legendary"
+   },
+   "image_was": "embedded png",
+   "image_now": "embedded png",
+   "before_grid": "111111111111110111111110111111111111111111101111110111111111111111111111111111011",
+   "after_grid": "111111111111110111111110111111111111111111101111110111111111111111111111111111011"
+  },
+  {
+   "tokenId": "35",
+   "name": "Binary Pixels #35",
+   "ts": "2026-05-23T00:01:15.000000Z",
+   "status": "ok",
+   "cells_changed": 25,
+   "before": {
+    "Black Pixels": 0,
+    "White Pixels": 81,
+    "Rarity": "Mythic"
+   },
+   "after": {
+    "Black Pixels": 25,
+    "White Pixels": 56,
+    "Rarity": "Uncommon"
+   },
+   "image_was": "embedded png",
+   "image_now": "embedded png",
+   "before_grid": "000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+   "after_grid": "111000000010000111000001001110010000010000000001001000110111101001000000010010000"
+  }
+ ]
+}

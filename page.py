@@ -34,9 +34,49 @@ def tile(bits, cls="", other=None):
 
 def main():
     grids = json.load(open("grids.json"))
+    toks = json.load(open("tokens.json"))
     m = json.load(open("matches.json"))
     st = json.load(open("structure.json"))
+    pr = json.load(open("provenance.json"))
     rows = m["rows"]
+    byid = {(r["id"], r["polarity"]): r for r in rows}
+
+    def bestp(tid):
+        return min((byid[(tid, p)] for p in ("black", "white") if (tid, p) in byid),
+                   key=lambda r: r["p"])
+
+    # The three tokens minted with the identical all-white grid, and what became of them.
+    edits = {str(e["tokenId"]): e for e in pr["edits"] if e.get("tokenId") is not None}
+    blanked = [e for e in pr["edits"]
+               if e.get("before") and e["before"].get("Black Pixels") == 0]
+    ecards = []
+    for e in sorted(blanked, key=lambda x: int(x["tokenId"])):
+        tid = str(e["tokenId"])
+        after = "".join(grids[tid]["rows"])
+        before = e.get("before_grid") or "0" * 81
+        kept = e["after"].get("Black Pixels") == 0
+        ecards.append(
+            f'<figure class="card">{tile(before)}{tile(after)}'
+            f'<figcaption>#{tid} <span class="dimtxt">minted blank, '
+            f'{"kept blank" if kept else "rewritten"} {e["ts"][:10]}</span><br>'
+            f'<b>{e["before"].get("Black Pixels")} black · {e["before"].get("Rarity")}'
+            f' → {e["after"].get("Black Pixels")} black · {e["after"].get("Rarity")}</b><br>'
+            f'<span class="dimtxt">{e["cells_changed"]} of 81 cells changed</span>'
+            f'</figcaption></figure>')
+
+    # Every token the project's own Pattern trait says contains a shape.
+    pat = []
+    for tid in sorted(grids, key=int):
+        ps = [a["value"] for a in toks[tid]["attributes"] if a["trait_type"] == "Pattern"]
+        if ps:
+            b = bestp(tid)
+            pat.append(f'<tr><td class="n">#{tid}</td><td class="n">{grids[tid]["black"]}</td>'
+                       f'<td>{html.escape(" + ".join(ps))}</td>'
+                       f'<td>{html.escape(b["matches"][0]["name"])}</td>'
+                       f'<td class="n">{b["mcc"]:.3f}</td><td class="n">{b["p"]:.3f}</td></tr>')
+    npat = len(pat)
+    extreme = [t for t in grids if grids[t]["black"] <= 9 or grids[t]["black"] >= 74]
+    t43 = "".join(grids["43"]["rows"])
 
     def grid_bits(tid, pol):
         b = "".join(grids[tid]["rows"])
@@ -119,14 +159,17 @@ thead th{{color:var(--dim);font-weight:600}}
   answer mean anything: <b>how often does the grid's own reshuffled self do better?</b>
   Two hundred and eighteen readings, nine of them beat chance at the 5% line. Chance predicts
   eleven.</p>
+  <p class="lede">Then I read the 130 transactions that built the contract, and found that the
+  collection had already run this experiment on itself — badly — and quietly deleted the
+  evidence.</p>
 </header>
 
 <div class="disc">
 <b>Disclosure.</b> This was built for <a href="https://poidh.xyz/base/bounty/325">poidh bounty
 #325</a>, which pays 0.036 ETH for the most convincing discovery about this collection. I did not
 mint a token, I hold none of them, and the tool works the same whether or not you do. Everything
-below comes from <code>tokenURI</code> calls anyone can repeat; the numbers regenerate from the
-scripts in the repo.
+below comes from <code>tokenURI</code> calls and public transaction history anyone can repeat;
+the numbers regenerate from the scripts in the repo.
 </div>
 
 <section>
@@ -279,6 +322,85 @@ scripts in the repo.
 </section>
 
 <section>
+  <h2>Where the grids actually come from</h2>
+  <p>All of the above treats the collection as random and asks what is in it. The contract is
+  unverified, so I went and read the calls that made it instead. There are {pr["tx_count"]}
+  transactions to it, and they say something the token metadata does not.</p>
+
+  <p><code>safeMint(address to, string uri)</code> takes the <b>entire finished token</b> — name,
+  description, attributes and the base64 PNG of the grid — as a calldata argument. Nothing about
+  the pattern is computed on chain or derived from any chain value. It arrives complete, written
+  by the sender. And every one of the {sum(pr["mint_senders"].values())} mints ({len(pr["reverted_mints"])} of
+  them reverted) was sent by a single address, <code>0x7c717EBb…745f</code>. There is no public
+  mint function in play: you do not mint a Binary Pixel, one is minted to you.</p>
+
+  <p>That is not a criticism, it is just what "pure randomness" has to mean here — a claim about
+  an off-chain generator, not a property anybody can check from the chain. Which makes the
+  remaining seven transactions worth reading closely. They are <code>setTokenURI</code> calls,
+  and they rewrite tokens that were already minted.</p>
+
+  <p>Two of them are housekeeping: <b>#7 and #8 were minted pointing at an <code>https://</code>
+  image on a private host</b> and were rewritten three days later to embed the PNG. Until that
+  edit, two tokens in an on-chain art collection were a link.</p>
+
+  <p>The other five are not housekeeping.</p>
+
+  <h3>Three tokens were minted as the same blank grid</h3>
+  <p>The rarest token in the collection is <b>#13</b>, the only Mythic, 81 white cells and no
+  picture at all. It is the only one — <i>now</i>. Three tokens were minted with an identical
+  all-white grid, and two of them were rewritten into ordinary patterns.</p>
+
+  <div class="cards">{"".join(ecards)}</div>
+
+  <p>#32 became a Common and #35 became an Uncommon. #13 was touched on the same day and left
+  blank. The most likely reading is a generator bug that kept emitting empty grids, noticed and
+  patched by hand — the calls are public, they use a documented owner function, and they all
+  happened in May 2026, months before this contest existed. But the consequence stands on its
+  own: <b>the uniqueness of the rarest token in a collection sold on randomness is an editorial
+  decision.</b> Two duplicates existed and were overwritten. And since Rarity is
+  |black − 40.5|, rewriting them did not just change two pictures, it moved two tokens
+  from the top of the rarity ladder to the middle of it.</p>
+
+  <h3>The project already built a shape detector</h3>
+  <p>Three of those five edits also strip a trait called <code>Pattern</code>, and a fourth
+  rewrites one. <code>Pattern</code> is the generator's own reading of the grid — values like
+  <i>Solid Core</i>, <i>Diagonal ↙</i>, <i>X Shape</i>, <i>Border Ring</i>. #5 was relabelled by
+  hand from <i>Diagonal ↙</i> to <i>Cross</i>, and #30 — 76 black cells — lost its
+  <i>Diagonal ↙</i> altogether.</p>
+
+  <p>The two blank tokens are the tell. Before they were touched, #13 and #32 were 81 white cells
+  carrying <code>Pattern: Solid Core</code>. The detector looked at nothing at all and reported a
+  solid core.</p>
+
+  <p>{npat} tokens still carry the trait. Every single one of them has a black count of 9 or
+  fewer, or 74 or more. <b>Of the {len(grids) - len(extreme)} tokens with between 10 and 73 black
+  cells, not one has ever been labelled with a shape.</b> The trait only fires on grids so
+  lopsided that almost any template matches — and it fires enthusiastically. Token #43 is 80 black
+  cells and one white one, and it is labelled <i>X Shape</i>, <i>Border Ring</i>, <i>Mirror</i> and
+  <i>Solid Core</i> simultaneously, as four separate repeated <code>Pattern</code> entries in the
+  same attributes array:</p>
+
+  <p style="text-align:center">{tile(t43)}</p>
+
+  <p>Run those {npat} tokens through the null and the picture completes:</p>
+
+  <table>
+    <thead><tr><th class="n">token</th><th class="n">black</th><th>the project's label</th>
+      <th>my best match</th><th class="n">MCC</th><th class="n">p</th></tr></thead>
+    <tbody>{"".join(pat)}</tbody>
+  </table>
+
+  <p><b>Not one of the {npat} tokens the collection itself says contains a shape beats its own
+  reshuffles at p ≤ 0.05.</b> #96 is labelled <i>X Shape</i>; 99.8% of its own reshuffles match my
+  corpus better than it does. That is the whole argument of this page, made by the project's own
+  metadata: a shape detector with no null attached will find shapes, and it will find them exactly
+  where a broken one would — in the grids with almost nothing in them, and in the grids with
+  almost nothing missing.</p>
+
+  <p>Which is presumably why the trait was dropped. Ninety-six of the 110 tokens do not have it.</p>
+</section>
+
+<section>
   <h2>What this is good for</h2>
   <p>Not much, if what you wanted was a hidden message. Quite a lot, if you hold one of these and
   want to know whether the thing you see in it is worth mentioning. Run the tool on your token and
@@ -295,7 +417,8 @@ node fetch.js       # 110 tokens off Base, rotating three RPCs
 python3 grids.py    # decode, checked against the on-chain Black Pixels attribute
 python3 glyphs.py   # 6,882 distinct bitmaps
 python3 match.py    # scores + the reshuffle null
-python3 structure.py</pre>
+python3 structure.py
+python3 provenance.py  # the 130 contract calls, live from Blockscout</pre>
 
   <p>MIT. The repo carries <code>tokens.json</code>, so you can skip the chain reads and
   reproduce every number here offline.</p>

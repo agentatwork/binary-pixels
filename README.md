@@ -26,6 +26,35 @@ Two things about the collection fall out on the way:
 | `Rarity` is **\|black − 40.5\|**, not darkness | sorting all 110 by distance from an even split puts the five bands in strict order, no exceptions. A near-empty grid and a near-full one are equally rare; a 40/41 split is Common. The one Mythic is **#13**, completely blank. |
 | the black count is drawn **flat over 0–81** | observed sd 22.8, uniform gives 23.7, eighty-one fair coins would give 4.5. KS distance 0.068 against a 0.130 critical value. The count is chosen first, then the cells are placed — which is what makes a blank grid mintable. |
 
+## The collection already ran this experiment on itself
+
+The contract is unverified, so `provenance.py` reads the 130 transactions that built it instead.
+Three things fall out.
+
+**Nothing is generated on chain.** `safeMint(address to, string uri)` takes the whole finished
+token — name, description, attributes and the base64 PNG — as a calldata argument, and all 115
+mints (5 reverted) came from one address, `0x7c717EBb…745f`. "Pure randomness" is a claim about an
+off-chain generator, not a property anyone can check from the chain.
+
+**The unique Mythic is unique by edit.** Three tokens were minted with the identical all-white
+grid. Two were rewritten by `setTokenURI` in May 2026 — #32 into a 31-black Common, #35 into a
+25-black Uncommon — leaving #13 as the only blank one. Since `Rarity` is |black − 40.5|, that
+did not just change two pictures; it moved two tokens from the top of the rarity ladder to the
+middle of it. The likeliest reading is a generator bug patched by hand, months before this
+contest existed, using a documented owner function.
+
+**The project shipped a shape detector, and it did not work.** Four tokens once carried a
+`Pattern` trait that those same edits stripped or rewrote — including `Solid Core` on two grids
+that were 81 white cells and nothing else. 14 tokens still carry it, and every one of them has
+≤9 or ≥74 black cells; **none of the 89 tokens in the middle has ever been labelled with a
+shape.** #43 (80 black, one white cell) is labelled `X Shape` + `Border Ring` + `Mirror` +
+`Solid Core` at once, as four repeated entries in one attributes array.
+
+Run those 14 through the null and **not one beats its own reshuffles at p ≤ 0.05.** #96 is
+labelled `X Shape`; 99.8% of its own reshuffles match my corpus better than it does. A shape
+detector with no null attached finds shapes exactly where a broken one would — in the grids with
+almost nothing in them, and in the grids with almost nothing missing.
+
 ## Why the null is the whole tool
 
 Six thousand shapes is six thousand chances, and the best of six thousand tries scores high even on
@@ -47,6 +76,7 @@ python3 glyphs.py   # build the corpus -> corpus.json
 python3 match.py    # scores + the reshuffle null -> matches.json
 python3 match.py --all
 python3 structure.py   # the six spatial statistics (~90s)
+python3 provenance.py  # the 130 contract calls, live from Blockscout
 ```
 
 `tokens.json` is committed, so `fetch.js` is optional and everything else runs offline.
@@ -70,6 +100,9 @@ Needs `numpy`, `pillow`, and `ethers` only for the chain reads.
 - **Identical bitmaps are merged.** At five cells across, `'O'`, `'0'` and `'o'` are one shape. Left
   separate they would be three independent chances to match, which is exactly the inflation the
   null exists to prevent.
+- **Two tokens were minted pointing at an `https://` image**, not a data URI, and were rewritten
+  three days later to embed the PNG. Any decoder that assumes `data:` on this contract's history
+  will throw on tokens #7 and #8.
 - **No rotations, no mirroring.** A mirrored E is not an E, and allowing either roughly doubles the
   number of chances every grid gets to look like something.
 
