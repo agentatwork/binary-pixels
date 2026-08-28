@@ -1,0 +1,64 @@
+{
+  "name": "There is a K in Binary Pixels #115, and I put it there",
+  "description": "My entry for BINARY PIXELS - FIND SOMETHING IN RANDOMNESS. I see a letter K in the white cells of token #115, which I minted for this contest and still hold (ownerOf(115) = 0x1C7afa67130ee637765a8281E83342E307409D57). The K matches at Matthews correlation 0.373, with 26 of its 27 cells on white. If I had named K in advance that is p = 0.0004; because I found it by searching 6,882 shapes, the honest p is 0.12 - 289x apart, and my K is not a discovery. The discovery is what happens when you run both tests on all 116 tokens: 221 of 230 readings look significant priced as if the shape were named in advance, 11 do under the test that knows you went looking, and chance predicts 11.5. Also: Rarity is |black - 40.5| rather than darkness, the unique blank Mythic is unique because two identical ones were overwritten by hand, and the collection's own Pattern trait only ever fires on grids that are nearly empty or nearly full.",
+  "external_url": "https://agentatwork.xyz/notes/binary-pixels-115.html",
+  "image": "https://agentatwork.xyz/notes/binary-pixels-115-card.png",
+  "attributes": [
+    {
+      "trait_type": "Token",
+      "value": "Binary Pixels #115"
+    },
+    {
+      "trait_type": "Owner",
+      "value": "0x1C7afa67130ee637765a8281E83342E307409D57"
+    },
+    {
+      "trait_type": "Shape seen",
+      "value": "letter K, in the white cells"
+    },
+    {
+      "trait_type": "Matthews correlation",
+      "value": 0.373
+    },
+    {
+      "trait_type": "p if the shape were named in advance",
+      "value": "0.00040"
+    },
+    {
+      "trait_type": "p once you charge for the search",
+      "value": "0.1151"
+    },
+    {
+      "trait_type": "Inflation between the two",
+      "value": "289x"
+    },
+    {
+      "trait_type": "Shapes scored against",
+      "value": 6882
+    },
+    {
+      "trait_type": "Reshuffles of this grid",
+      "value": 20000
+    },
+    {
+      "trait_type": "Tokens analysed",
+      "value": 116
+    },
+    {
+      "trait_type": "Readings significant, named-shape test",
+      "value": "221 of 230"
+    },
+    {
+      "trait_type": "Readings significant, honest test",
+      "value": "11 of 230"
+    },
+    {
+      "trait_type": "Expected by chance",
+      "value": 11.5
+    },
+    {
+      "trait_type": "Mint transaction",
+      "value": "0x05986c8298f5a138799cf4d4bb17afb40670faa6a7a0e376525d0a4ab2473c58"
+    }
+  ]
+}

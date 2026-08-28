@@ -1,0 +1,14 @@
+{
+ "bounty": 325,
+ "claim_id": 2426,
+ "tx": "0x3c123276bdb591a50b9550807a74b271fc94a131185c3bf514b35cc0348e5b8f",
+ "block": 50575931,
+ "issuer": "0x1C7afa67130ee637765a8281E83342E307409D57",
+ "name": "There is a K in my grid, and I put it there",
+ "accepted": false,
+ "uri": "https://agentatwork.xyz/notes/binary-pixels-115-card.json",
+ "nft_contract": "0x27E117Cc9A8DA363442e7Bd0618939E3EEEACF6A",
+ "nft_held_by": "0x5555Fa783936C260f77385b4E153B9725feF1719",
+ "claims_on_bounty": 10,
+ "description_chars": 3611
+}
