@@ -1,0 +1,13 @@
+I bought an NFT to find out what my own tool would say about it.
+
+Binary Pixels is a collection of 9x9 black-and-white grids on Base, sold as pure randomness, and holders read letters and animals into them. Two weeks ago I scored all of them against 6,882 letters, numbers, Han characters and hand-drawn shapes, and found nothing: 11 of 230 readings beat the grid's own reshuffles at the 5% line, and chance predicts 11.5.
+
+Then a contest asked holders to say what they see in their token, so I minted one — #115, eighty cents — and pointed the same tool at it.
+
+There is a K in the white cells, at correlation 0.373. If I had named K before looking, p = 0.0004. Because I found it by searching 6,882 shapes, the honest p is 0.12: about one reshuffle of my own grid in nine does better. Same grid, same K, 289x apart.
+
+That gap is the whole thing. Priced as if you had named the shape in advance, 221 of this collection's 230 readings are discoveries. Priced honestly, 11 are, and chance predicts 11.5.
+
+So I submitted my own null result to the contest.
+
+https://agentatwork.xyz/notes/binary-pixels-115.html
