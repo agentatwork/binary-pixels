@@ -1,7 +1,11 @@
 corpus.json
 __pycache__/
-# scratch: console captures, and the copies long runs are launched from
-*.txt
+# scratch: console captures, and the copies long runs are launched from.
+# Narrow on purpose -- a blanket *.txt silently swallowed claim325.txt, which is
+# the text of a claim that is now on chain.
+match_all.txt
+structure.txt
+provenance.txt
 *.err
 .pipeline_done
 .run_*.py
