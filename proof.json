@@ -1,0 +1,40 @@
+{
+ "contract": "0x744D59F4F77E3556A62f51FfFAdD7A82859A3D38",
+ "chain": "base",
+ "chain_id": 8453,
+ "token": 115,
+ "owner": "0x1C7afa67130ee637765a8281E83342E307409D57",
+ "name": "Binary Pixels #115",
+ "attributes": [
+  {
+   "trait_type": "Black Pixels",
+   "value": 22
+  },
+  {
+   "trait_type": "White Pixels",
+   "value": 59
+  },
+  {
+   "trait_type": "Rarity",
+   "value": "Uncommon"
+  }
+ ],
+ "supply": 116,
+ "token_uri_sha256": "a78233dbbdd5e9a7cc82475df2d1123b2aca723c5b6094ecec9d0105ab5817b4",
+ "image_sha256": "a64ee778f3b93e008186fd8248f40d86ca3efbacd03a7c503b5025d1ccbfe505",
+ "image_bytes": 497,
+ "payment": {
+  "tx": "0x78bc19cfe0e860357250567733470362e53523a47ff0812741c8a68200a85612",
+  "block": 50575167,
+  "to": "0x7c717EBb2f1a21124FC096E163981F02b940745f",
+  "from": "0x1C7afa67130ee637765a8281E83342E307409D57",
+  "eth": 0.0002,
+  "timestamp": 1787939681
+ },
+ "mint": {
+  "tx": "0x05986c8298f5a138799cf4d4bb17afb40670faa6a7a0e376525d0a4ab2473c58",
+  "block": 50575169,
+  "from": "0x7c717EBb2f1a21124FC096E163981F02b940745f",
+  "log_index": 375
+ }
+}

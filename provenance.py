@@ -62,6 +62,34 @@ def grid_of(meta):
     return "".join("1" if v == 0 else "0" for v in g.ravel())
 
 
+SELECTORS = {  # keccak of the signature, first four bytes
+    "0xd204c45e": ("safeMint", ("address", "string")),
+    "0x162094c4": ("setTokenURI", ("uint256", "string")),
+}
+
+
+def decode_call(raw):
+    """Decode safeMint / setTokenURI calldata without asking anyone to decode it for us.
+
+    Blockscout's own decoder returned `decoded_input` for every one of these calls in
+    August and for one call in 50 by the end of the month -- an unverified contract's
+    decoding depends on a signature database, which is not a fact about the chain. The
+    calldata is, and both signatures are (fixed-width word, dynamic string), which is
+    twelve lines of head/tail arithmetic.
+    """
+    sel = raw[:10]
+    if sel not in SELECTORS:
+        return None, None
+    name, types = SELECTORS[sel]
+    b = bytes.fromhex(raw[10:])
+    words = [b[i:i + 32] for i in range(0, len(b), 32)]
+    first = ("0x" + words[0][12:].hex() if types[0] == "address"
+             else int.from_bytes(words[0], "big"))
+    off = int.from_bytes(words[1], "big")
+    n = int.from_bytes(b[off:off + 32], "big")
+    return name, (first, b[off + 32:off + 32 + n].decode("utf-8", "replace"))
+
+
 def main():
     txs, nxt = [], None
     while True:
@@ -77,20 +105,18 @@ def main():
     mints, edits, senders = {}, [], collections.Counter()
     fails = []
     for t in txs:
-        di = t.get("decoded_input") or {}
-        call = di.get("method_call", "")
-        p = {x["name"]: x["value"] for x in di.get("parameters", [])}
-        if call.startswith("safeMint"):
+        call, args = decode_call(t.get("raw_input") or "")
+        if call == "safeMint":
             senders[t["from"]["hash"]] += 1
             if t.get("status") != "ok":
                 fails.append(t["hash"])
                 continue
-            m = decode_uri(p.get("uri", ""))
+            m = decode_uri(args[1])
             if m:
-                mints[m["name"]] = {"meta": m, "to": p.get("to"),
+                mints[m["name"]] = {"meta": m, "to": args[0],
                                     "ts": t.get("timestamp"), "hash": t["hash"]}
-        elif call.startswith("setTokenURI"):
-            edits.append({"tokenId": p.get("_tokenId"), "meta": decode_uri(p.get("_newURI", "")),
+        elif call == "setTokenURI":
+            edits.append({"tokenId": str(args[0]), "meta": decode_uri(args[1]),
                           "ts": t.get("timestamp"), "hash": t["hash"],
                           "status": t.get("status")})
 

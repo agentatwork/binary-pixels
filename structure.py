@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """What generated these grids?
 
-Three questions, answered from the 110 grids alone (the contract is unverified on
+Three questions, answered from the grids alone (the contract is unverified on
 Blockscout, so there is no source to read):
 
   1. How is the Rarity trait assigned? The black counts inside each rarity band overlap
@@ -62,7 +62,7 @@ def main():
     clean = all(["Common", "Uncommon", "Rare", "Legendary", "Mythic"].index(lab[i]) <=
                 ["Common", "Uncommon", "Rare", "Legendary", "Mythic"].index(lab[i + 1])
                 for i in range(len(lab) - 1))
-    print(f"  sorting all 110 by |black - 40.5| puts the bands in strict order: "
+    print(f"  sorting all {len(ids)} by |black - 40.5| puts the bands in strict order: "
           f"{'yes' if clean else 'no'}")
     print("  -> Rarity measures imbalance, not darkness. A near-empty grid and a near-full")
     print("     grid are equally rare; a 40/41 split is Common.")
@@ -78,14 +78,14 @@ def main():
     emp = np.arange(1, len(x) + 1) / len(x)
     ks = max(np.abs(emp - (x + 1) / 82).max(), np.abs((x) / 82 - (emp - 1 / len(x))).max())
     print(f"  KS distance from uniform(0..81): {ks:.3f}  "
-          f"(5% critical value at n=110 is {1.36 / np.sqrt(110):.3f})")
+          f"(5% critical value at n={len(k)} is {1.36 / np.sqrt(len(k)):.3f})")
     print("  -> the count is drawn flat across the whole range, then the cells are filled.")
     print("     That is a deliberate choice: it is what makes an all-white grid mintable.")
 
     print("\n=== 3. spatial structure, given the count ===")
     print("  For each token, compare it to 20,000 reshuffles of its own cells. If the")
     print("  generator picks a count and then scatters that many black cells uniformly,")
-    print("  every z below is noise around zero and the sum over 110 tokens is too.")
+    print(f"  every z below is noise around zero and the sum over {len(ids)} tokens is too.")
     obs = np.array([stats(a) for a in A])
     keep = (k > 0) & (k < 81)
     cache = {}
@@ -110,8 +110,8 @@ def main():
     # and the mid-p of an atomic statistic is not uniform on (0,1), it is a few spikes. A
     # KS test against the continuous uniform therefore rejects even when the null is exactly
     # true, which is a property of the test and not a fact about the collection. So instead
-    # of assuming a reference distribution, build one: draw a synthetic collection of 109
-    # grids from the null itself, with the same black counts, push it through the identical
+    # of assuming a reference distribution, build one: draw a synthetic collection of
+    # scorable grids from the null itself, with the same black counts, push it through the identical
     # mid-p machinery, and see where the real collection falls among 4,000 of those.
     selfp = {kk: np.stack([midp(np.delete(v, r, axis=0), v[r]) for r in range(400)])
              for kk, v in cache.items()}
@@ -119,12 +119,14 @@ def main():
     for t in range(4000):
         sim[t] = np.mean([selfp[int(k[i])][rng.integers(400)] for i in np.where(keep)[0]], axis=0)
 
+    pvals = {}
     print(f"\n  {'statistic':<26s} {'mean p':>7s} {'null mean p':>12s} {'2-sided':>8s} "
           f"{'low':>4s} {'high':>4s}")
     for j, nm in enumerate(NAMES):
         o = ps[keep, j].mean()
         c = sim[:, j]
         pv = 2 * min((c <= o).mean(), (c >= o).mean())
+        pvals[nm] = float(min(pv, 1.0))
         star = "  <--" if pv < 0.05 / len(NAMES) else ""
         print(f"  {nm:<26s} {o:7.3f} {c.mean():9.3f}+-{c.std():.3f} {min(pv, 1.0):8.4f} "
               f"{int((ps[keep, j] < 0.025).sum()):4d} {int((ps[keep, j] > 0.975).sum()):4d}{star}")
@@ -132,7 +134,18 @@ def main():
     print(f"  Column 3 is two-sided against that. With six statistics the 5% line is "
           f"{0.05 / len(NAMES):.4f}.")
 
-    json.dump({"ids": ids, "black": k.tolist(), "reps": REPS,
+    # The adjacency figures the writeup quotes, computed here rather than typed there.
+    adj = int(obs[keep, 0].sum())
+    exp = float(sum(cache[int(k[i])][:, 0].mean() for i in np.where(keep)[0]))
+    below = int(sum(obs[i, 0] < cache[int(k[i])][:, 0].mean() for i in np.where(keep)[0]))
+    print(f"\n  adjacent black pairs: {adj} observed against {exp:.0f} expected "
+          f"({100 * (adj - exp) / exp:+.1f}%), below expectation in {below} of {int(keep.sum())}")
+
+    json.dump({"ids": ids, "black": k.tolist(), "reps": REPS, "scorable": int(keep.sum()),
+               "pvals": pvals, "bonferroni": 0.05 / len(NAMES),
+               "ks": float(ks), "ks_crit": float(1.36 / np.sqrt(len(k))),
+               "rarity_strict_order": bool(clean),
+               "adjacency": {"observed": adj, "expected": exp, "below": below},
                "p": {NAMES[j]: ps[:, j].tolist() for j in range(len(NAMES))},
                "null_mean_p": {NAMES[j]: [float(sim[:, j].mean()), float(sim[:, j].std())]
                                for j in range(len(NAMES))}},

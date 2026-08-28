@@ -35,7 +35,7 @@
 },
 "2": {
 "name": "Binary Pixels #2",
-"owner": null,
+"owner": "0x69D77152842EFF2642aF99CDe5B8513E7c77B1b3",
 "black": 44,
 "rarity": "Common",
 "rows": [
@@ -154,7 +154,7 @@
 },
 "9": {
 "name": "Binary Pixels #9",
-"owner": null,
+"owner": "0x69D77152842EFF2642aF99CDe5B8513E7c77B1b3",
 "black": 60,
 "rarity": "Uncommon",
 "rows": [
@@ -545,7 +545,7 @@
 },
 "32": {
 "name": "Binary Pixels #32",
-"owner": null,
+"owner": "0x5bc798157563Db990CEeCD33E8b7c9f4E87923e0",
 "black": 31,
 "rarity": "Common",
 "rows": [
@@ -817,7 +817,7 @@
 },
 "48": {
 "name": "Binary Pixels #48",
-"owner": null,
+"owner": "0xed416De2D92A8df357d941BcF45f80AF20F28a62",
 "black": 68,
 "rarity": "Rare",
 "rows": [
@@ -1276,7 +1276,7 @@
 },
 "75": {
 "name": "Binary Pixels #75",
-"owner": null,
+"owner": "0x8C9c3bE9228450ea2C0A22dE0615A95fcAE637cB",
 "black": 20,
 "rarity": "Uncommon",
 "rows": [
@@ -1531,7 +1531,7 @@
 },
 "90": {
 "name": "Binary Pixels #90",
-"owner": null,
+"owner": "0x93047d88222a1421248D1180D3eaA7f06187A46f",
 "black": 4,
 "rarity": "Legendary",
 "rows": [
@@ -1867,6 +1867,108 @@
 "111111111",
 "111011111",
 "111111111"
+]
+},
+"110": {
+"name": "Binary Pixels #110",
+"owner": "0x262F3bf1c5d7F27A4cFa6e63937A365943bE1838",
+"black": 11,
+"rarity": "Rare",
+"rows": [
+"000000000",
+"100010000",
+"001100000",
+"100010000",
+"100100000",
+"000000010",
+"000000000",
+"000000000",
+"100000001"
+]
+},
+"111": {
+"name": "Binary Pixels #111",
+"owner": "0x2D3d940Af73846F81Fd65C65857e5e8DAf3c1EA8",
+"black": 80,
+"rarity": "Legendary",
+"rows": [
+"111111111",
+"111111111",
+"111111111",
+"111111111",
+"111111111",
+"111111111",
+"111111111",
+"110111111",
+"111111111"
+]
+},
+"112": {
+"name": "Binary Pixels #112",
+"owner": "0xdE2334fDB25481f138Bec792d1f37A1dCA0F329F",
+"black": 50,
+"rarity": "Common",
+"rows": [
+"111111001",
+"110011000",
+"111011001",
+"110111101",
+"111101100",
+"011110101",
+"011101101",
+"110000101",
+"110110000"
+]
+},
+"113": {
+"name": "Binary Pixels #113",
+"owner": "0xdE2334fDB25481f138Bec792d1f37A1dCA0F329F",
+"black": 58,
+"rarity": "Uncommon",
+"rows": [
+"111111111",
+"101111110",
+"011101101",
+"011111101",
+"001111111",
+"010100111",
+"101010111",
+"011110111",
+"100011100"
+]
+},
+"114": {
+"name": "Binary Pixels #114",
+"owner": "0xdE2334fDB25481f138Bec792d1f37A1dCA0F329F",
+"black": 36,
+"rarity": "Common",
+"rows": [
+"001001010",
+"010011110",
+"110101001",
+"011110000",
+"100001101",
+"001010001",
+"110001100",
+"100110110",
+"010010001"
+]
+},
+"115": {
+"name": "Binary Pixels #115",
+"owner": "0x1C7afa67130ee637765a8281E83342E307409D57",
+"black": 22,
+"rarity": "Uncommon",
+"rows": [
+"011001100",
+"000010101",
+"100010001",
+"000000000",
+"000001000",
+"000011000",
+"100100010",
+"000100101",
+"000110001"
 ]
 }
 }

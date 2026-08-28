@@ -1,8 +1,8 @@
 {
  "contract": "0x744D59F4F77E3556A62f51FfFAdD7A82859A3D38",
- "tx_count": 130,
+ "tx_count": 136,
  "mint_senders": {
-  "0x7c717EBb2f1a21124FC096E163981F02b940745f": 115
+  "0x7c717EBb2f1a21124FC096E163981F02b940745f": 121
  },
  "reverted_mints": [
   "0x5a54719aa22fb9c2ddf2334d2455c4ce79a965067fe6d624a5a524c774deeccd",

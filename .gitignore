@@ -1,2 +1,7 @@
 corpus.json
 __pycache__/
+# scratch: console captures, and the copies long runs are launched from
+*.txt
+*.err
+.pipeline_done
+.run_*.py
